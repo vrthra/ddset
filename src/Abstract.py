@@ -34,9 +34,6 @@ class St(Enum):
 
 
 
-def non_canonical(g):
-    return {k:[''.join(r) for r in g[k]] for k in g}
-
 from Parser import IterativeEarleyParser as Parser
 #from fuzzingbook.Parser import PEGParser as Parser
 
@@ -509,7 +506,7 @@ def get_abstraction(grammar_, my_input, predicate, max_checks=100):
     grammar = grammar_['[grammar]']
     assert start in grammar
     assert predicate(my_input) == PRes.success
-    d_tree, *_ = Parser(non_canonical(grammar), start_symbol=start).parse(my_input)
+    d_tree, *_ = Parser(grammar, start_symbol=start, canonical=True).parse(my_input)
     min_tree = reduction(d_tree, grammar, predicate)
     min_s = tree_to_string(min_tree)
     if LOG:
@@ -552,7 +549,7 @@ def load_bug(bug_fn, grammar_meta):
     with open(bug_fn) as f: bug_src = f.read()
     start = grammar_meta['[start]']
     grammar = grammar_meta['[grammar]']
-    parser = Parser(non_canonical(grammar), start_symbol=start) # log=True)
+    parser = Parser(grammar, start_symbol=start, canonical=True) # log=True)
     forest = parser.parse(bug_src.strip())
     tree = list(forest)[0]
     return grammar_meta, coalesce(tree)
