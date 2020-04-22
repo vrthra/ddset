@@ -34,8 +34,7 @@ class St(Enum):
 
 
 
-from Parser import IterativeEarleyParser as Parser
-#from fuzzingbook.Parser import PEGParser as Parser
+from Parser import EarleyParser as Parser
 
 # ### Editable nodes
 #
