@@ -69,7 +69,7 @@ def main(gf_fbjson, bug_fn, pred, results_dir='results', max_checks=A.MAX_CHECKS
     try_load(name)
 
     assert _predicate(A.tree_to_string(tree)) == A.PRes.success
-    assert _predicate('find --help') == A.PRes.failed
+    #assert _predicate('') == A.PRes.failed
 
     min_s, abs_s, a_mintree = A.get_abstraction(meta,
                                A.tree_to_string(tree),
