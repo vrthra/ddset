@@ -1,0 +1,1 @@
+grep --word-regexp '\(foo\) \1' foofoobar

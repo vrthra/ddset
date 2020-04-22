@@ -1,0 +1,1 @@
+grep --files-with-matches --recursive --exclude-dir=foo 'NEEDLE' /root
