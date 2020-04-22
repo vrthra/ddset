@@ -15,7 +15,7 @@ def find_covarying_paths(tree, path):
         i = v.rindex('_')
         oname = "<%s>" % v[:i]
         if oname:
-            return [(oname, path)]
+            return [(oname, name, path)]
         else:
             return []
     if not A.is_nt(name): return []
@@ -51,10 +51,10 @@ def fuzz_tree(mgrammar, tree):
     for i in range(MAX_LIMIT):
         abs_path_ = random.choice(paths + cpaths)
         if isinstance(abs_path_, tuple):
-            name, abs_path = abs_path_
+            name, fname, abs_path = abs_path_
             #node = A.get_child(tree, abs_path)
             #_, children, *rest = node
-            all_paths = [p for n,p in cpaths if n == name]
+            all_paths = [p for n,f,p in cpaths if f == fname]
             e = gf.fuzz(key=name)
             ntree = tree
             for p in all_paths:
