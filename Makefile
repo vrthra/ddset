@@ -28,15 +28,14 @@ fuzz_rhino_results_src=$(addsuffix .log,$(addprefix results/fuzz_rhino_,$(rhino_
 fuzz_closure_results_src=$(addsuffix .log,$(addprefix results/fuzz_closure_,$(closure_bugs)))
 fuzz_clojure_results_src=$(addsuffix .log,$(addprefix results/fuzz_clojure_,$(clojure_bugs)))
 
+unbuffer= #unbuffer -p
 
 results/reduce_%.log: src/%.py | results
-	echo 1 $@; echo 2 $<; echo 3 $*; echo 4 $^
-	time python $< 2>&1 | unbuffer -p tee $@_
+	time python $< 2>&1 | $(unbuffer) tee $@_
 	mv $@_ $@
 
 results/fuzz_%.log: src/fuzz_%.py results/reduce_%.log
-	echo 1 $@; echo 2 $<; echo 3 $*; echo 4 $^
-	time python $< 2>&1 | unbuffer -p tee $@_
+	time python $< 2>&1 | $(unbuffer) tee $@_
 	mv $@_ $@
 
 reduce_find: $(find_results_src); @echo done
