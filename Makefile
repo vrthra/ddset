@@ -79,3 +79,26 @@ all_closure: fuzz_closure
 	tar -cf closure.tar results .db
 	@echo closure done
 
+dbgbench-init: .dbgbench init-find init-grep
+	@echo done
+
+.dbgbench:
+	git clone https://github.com/vrthra-forks/dbgbench.github.io.git
+	touch $@
+
+dbgbench-clobber:
+	-$(MAKE) rm-find
+	-$(MAKE) rm-grep
+	rm -rf dbgbench.github.io .dbgbench
+
+init-find: .dbgbench; $(MAKE) -C dbgbench.github.io/docker init-find
+init-grep: .dbgbench; $(MAKE) -C dbgbench.github.io/docker init-grep
+
+rm-find: $(MAKE) -C dbgbench.github.io/docker rm-find
+rm-grep: $(MAKE) -C dbgbench.github.io/docker rm-grep
+
+prune-find:; sudo docker system prune --filter ancestor=ddset/find || echo
+prune-grep:; sudo docker system prune --filter ancestor=ddset/grep || echo
+
+ls-find:; @sudo docker ps --filter ancestor=ddset/find --format 'table {{.Image}} {{.ID}} {{.Names}}'
+ls-grep:; @sudo docker ps --filter ancestor=ddset/grep --format 'table {{.Image}} {{.ID}} {{.Names}}'
