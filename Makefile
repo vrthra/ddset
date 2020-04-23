@@ -1,3 +1,5 @@
+python=python3
+
 clean: ; rm -rf *.reduce.log *.fuzz.log results fuzzing
 clobber: clean; rm -rf .db
 results:; mkdir -p results
@@ -31,11 +33,11 @@ fuzz_clojure_results_src=$(addsuffix .log,$(addprefix results/fuzz_clojure_,$(cl
 unbuffer= #unbuffer -p
 
 results/reduce_%.log: src/%.py | results
-	time python $< 2>&1 | $(unbuffer) tee $@_
+	time $(python) $< 2>&1 | $(unbuffer) tee $@_
 	mv $@_ $@
 
 results/fuzz_%.log: src/fuzz_%.py results/reduce_%.log
-	time python $< 2>&1 | $(unbuffer) tee $@_
+	time $(python) $< 2>&1 | $(unbuffer) tee $@_
 	mv $@_ $@
 
 reduce_find: $(find_results_src); @echo done
@@ -79,7 +81,7 @@ all_closure: fuzz_closure
 	tar -cf closure.tar results .db
 	@echo closure done
 
-all: all_clojure all_closure all_rhino all_lua all_find all_grep
+all: all_lua all_rhino all_clojure all_closure all_find all_grep
 	@echo done
 
 dbgbench-init: .dbgbench init-find init-grep
