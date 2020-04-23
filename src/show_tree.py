@@ -63,14 +63,9 @@ if __name__ == '__main__':
                 print('min:', repr(res['min_s']))
                 print('abs:', repr(res['abs_s']))
                 print()
-                #print(A.general_str(res['abs_t']))
                 print(T.format_tree(abs_t,format_node=color_format_node, get_children=lambda x: x[1]))
             elif sys.argv[2] == '-json':
-                # print('min:', repr(res['min_s']))
-                # print('abs:', repr(res['abs_s']))
-                # print()
-                #print(A.general_str(res['abs_t']))
-                print(json.dumps(coalesce(res['abs_t']), indent=4))
+                print(json.dumps(abs_t, indent=4))
             elif sys.argv[2] == '-minstring':
                 print('Min String:', repr(res['min_s']))
                 print('Chars in Min String:', len(res['min_s']))
