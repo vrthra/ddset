@@ -1,8 +1,10 @@
 import os
 import Infra as I
+import Abstract as A
 from Abstract import PRes
 
 def my_predicate(src):
+    o = A.do(('sudo docker exec -it %s bash -c' % I.docker()).split(' ')  + ["echo foo foo bar > foofoobar"])
     o = I.do('grep', 'sudo docker exec -it %s bash -c' % I.docker(), "./grep5/grep/src/%s" % src, True)
     os.system("stty sane")
     out = o.stdout
