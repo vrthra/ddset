@@ -79,6 +79,9 @@ all_closure: fuzz_closure
 	tar -cf closure.tar results .db
 	@echo closure done
 
+all: all_clojure all_closure all_rhino all_lua all_find all_grep
+	@echo done
+
 dbgbench-init: .dbgbench init-find init-grep
 	@echo done
 
