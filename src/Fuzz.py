@@ -71,6 +71,7 @@ def fuzz_tree(mgrammar, tree):
 
 
 def main(gf_fbjson, bug_fn, pred, results_dir='fuzzing', max_checks=A.MAX_CHECKS):
+    I.DOCKER = bug_fn.split('.')[-1]
     meta, tree, name = I.load_grammar(gf_fbjson, bug_fn, pred)
     global MY_PREDICATE
     os.system('mkdir -p %s' % results_dir)

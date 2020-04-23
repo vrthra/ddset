@@ -8,6 +8,12 @@ LOG_NAME = None
 MY_PREDICATE = None
 SAVE_EXEC = False
 
+DOCKER = None
+def docker():
+    return DOCKER
+    # `docker ps --filter  name=c8491c11  -q`
+
+
 def do(prefix, cmd, src, as_string=False):
     o = None
     if as_string:
@@ -58,6 +64,8 @@ def save(name):
         json.dump(g_predicate, fp=f)
 
 def main(gf_fbjson, bug_fn, pred, results_dir='results', max_checks=A.MAX_CHECKS):
+    global DOCKER
+    DOCKER = bug_fn.split('.')[-1]
     os.system('mkdir -p .db/')
     meta, tree, name = load_grammar(gf_fbjson, bug_fn, pred)
     global LOG_NAME, MY_PREDICATE

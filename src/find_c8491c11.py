@@ -4,7 +4,7 @@ from Abstract import PRes
 
 def my_predicate(src):
     #sudo docker exec -it 67b83251cecf bash -c "./find7/find/src/find --files-with-matches --recursive --exclude-dir=foo NEEDLE \$HOME "
-    o = I.do('find', 'sudo docker exec -it 1c0f1a39c84b bash -c', "./find11/find/find/%s" % src, True)
+    o = I.do('find', 'sudo docker exec -it %s bash -c' % I.docker(), "./find11/find/find/%s" % src, True)
     os.system("stty sane")
     out = o.stdout
     if o.returncode == 139: return PRes.success
