@@ -96,11 +96,11 @@ dbgbench-clobber:
 	-$(MAKE) rm-grep
 	rm -rf dbgbench.github.io .dbgbench
 
-init-find: .dbgbench; $(MAKE) -C dbgbench.github.io/docker init-find
-init-grep: .dbgbench; $(MAKE) -C dbgbench.github.io/docker init-grep
+init-find: .dbgbench; $(MAKE) -C dbgbench.github.io/docker init-find find_bugs="$(find_bugs)"
+init-grep: .dbgbench; $(MAKE) -C dbgbench.github.io/docker init-grep grep_bugs="$(grep_bugs)"
 
-rm-find: $(MAKE) -C dbgbench.github.io/docker rm-find
-rm-grep: $(MAKE) -C dbgbench.github.io/docker rm-grep
+rm-find:; $(MAKE) -C dbgbench.github.io/docker rm-find
+rm-grep:; $(MAKE) -C dbgbench.github.io/docker rm-grep
 
 prune-find:; sudo docker system prune --filter ancestor=ddset/find || echo
 prune-grep:; sudo docker system prune --filter ancestor=ddset/grep || echo
