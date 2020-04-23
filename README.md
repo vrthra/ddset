@@ -116,6 +116,8 @@ $ make all_grep
 
 ## Result analysis
 
+### Table 1
+
 We use `lua` as an example.
 
 The command `make all_lua` will generate `results/4.lua.json`.
@@ -146,4 +148,48 @@ Min String: 'f=load(function() end)\ninteresting={}\ninteresting[0]="A"\ndebug.u
 Chars in Min String: 83
 ```
 
+
+### Table 2
+
+For each bug, the execution details are captured under `fuzzing`. The first two
+executions are to be ignored. These are test assertions that verifies that the
+fault is reproduced on the original string, and is not reproduced in an empty
+string.
+
+```
+$ wc -l fuzzing/4.lua.log.json 
+102 fuzzing/4.lua.log.json
+
+$ head -2 fuzzing/4.lua.log.json
+{"res": "PRes.success", "key": "test", "src": "f=load(function() end)\ninteresting={}\ninteresting[0]=string.rep(\"A\",512)\ndebug.upvaluejoin(f,1,f,1)"}
+{"res": "PRes.failed", "key": "test", "src": ""}
+```
+
+#### Valid%
+
+To check the number of valid executions, we first look at the number of
+executions:
+
+```
+$ cat fuzzing/4.lua.log.json  | sed -ne '3,$p' | wc -l
+100
+```
+
+Then, remove the invalid executions (those that are syntactically valid, but
+rejected semantically).
+
+```
+$ cat fuzzing/4.lua.log.json  | sed -ne '3,$p' | grep -v PRes.invalid | wc -l
+100
+```
+
+#### FAIL%
+
+FAIL counts executions that failed (i.e reproduced the condition of failure). We
+return `PRes.success` when one can successfully trigger the condition.
+
+```
+$ cat fuzzing/4.lua.log.json  | sed -ne '3,$p' | grep -v PRes.invalid | grep PRes.success | wc -l
+100
+```
 
