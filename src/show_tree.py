@@ -24,7 +24,16 @@ def is_token(val):
 
 def color_format_node(x):
     if len(x)== 3:
-        return ((T.Colors.CRED2 + repr(x[0]) + T.Colors.ENDC) if x[-1]['abstract'] else repr(x[0]))
+        if x[-1]['abstract']:
+            if x[0][0:2] == '<$':
+                if x[-1]['sensitive']:
+                    return (T.Colors.CRED2 + repr(x[0]) + T.Colors.ENDC)
+                else:
+                    return (T.Colors.CBLUE2 + repr(x[0]) + T.Colors.ENDC)
+            else:
+                return (T.Colors.CGREEN2 + repr(x[0]) + T.Colors.ENDC)
+        else:
+            return repr(x[0])
     else:
         return repr(x[0])
 
@@ -34,19 +43,37 @@ def format_node(x):
     else:
         return repr(x[0])
 
+def context(tree, check=True):
+    name, children, *rest = tree
+    if not A.is_nt(name): return tree
+    if name[0:2] == '<$':
+        rest[-1]['sensitive'] = check
+        return (name, [context(n, False) for n in children], *rest)
+    else:
+        return (name, [context(n, True) for n in children], *rest)
+
 if __name__ == '__main__':
     with open(sys.argv[1]) as f:
         res = json.load(fp=f)
-        print(res['min_s'])
-        print(res['abs_s'])
-        print(A.general_str(res['abs_t']))
-        abs_t = coalesce(res['abs_t'])
+        abs_t = context(coalesce(res['abs_t']))
 
         if len(sys.argv) > 2:
-            if sys.argv[2] == '-c':
+            if sys.argv[2] == '-tree':
+
+                print('min:', repr(res['min_s']))
+                print('abs:', repr(res['abs_s']))
+                print()
+                #print(A.general_str(res['abs_t']))
                 print(T.format_tree(abs_t,format_node=color_format_node, get_children=lambda x: x[1]))
-            elif sys.argv[2] == '-t':
+            elif sys.argv[2] == '-json':
+                # print('min:', repr(res['min_s']))
+                # print('abs:', repr(res['abs_s']))
+                # print()
+                #print(A.general_str(res['abs_t']))
                 print(json.dumps(coalesce(res['abs_t']), indent=4))
+            elif sys.argv[2] == '-minstring':
+                print('Min String:', repr(res['min_s']))
+                print('Chars in Min String:', len(res['min_s']))
         else:
             print(T.format_tree(abs_t,format_node=format_node, get_children=lambda x: x[1]))
 

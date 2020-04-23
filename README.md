@@ -114,13 +114,36 @@ $ make all_find
 $ make all_grep
 ```
 
-### Result analysis
+## Result analysis
 
-This will generate `results/4.lua.json`. Within this file, execute this command
-to determine the number of chars in the minimum input
-Given in Table 1, (lua-5.3.5.4, # Chars in Min String)
+We use `lua` as an example.
+
+The command `make all_lua` will generate `results/4.lua.json`.
+
+The result file can be inspected by the following command, which
+will dump out the JSON representation of the abstract tree.
 
 ```
-$ cat results/4.lua.json|  python -c 'import sys, json; print(json.load(sys.stdin)["min_s"], end="")' | wc -c
-83
+$ python3 src/show_tree.py  results/4.lua.json -json
 ```
+
+You can also see the string representation, along with an ascii
+tree representation using the following command. The abstract nodes
+are colored green, and context sensitive abstract nodes are colored
+red.
+
+```
+$ python3 src/show_tree.py  results/4.lua.json -tree | less -r
+```
+
+
+Within this file, execute this command to determine the number of chars in the
+minimum input Given in Table 1, (lua-5.3.5.4, # Chars in Min String)
+
+```
+$ python3 src/show_tree.py results/4.lua.json -minstring
+Min String: 'f=load(function() end)\ninteresting={}\ninteresting[0]="A"\ndebug.upvaluejoin(f,1,f,1)'
+Chars in Min String: 83
+```
+
+
