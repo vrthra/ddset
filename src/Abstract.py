@@ -1,5 +1,5 @@
 USE_NT_NAME = True
-TIMEOUT=60
+TIMEOUT=5
 LOOK_DEEPER_IN_ISOLATED = True
 
 SKIP_IS_SPECIAL = True
@@ -661,6 +661,9 @@ def do(command, env=None, shell=False, log=False, **args):
         stdout = '' if stdout is None else stdout.decode('utf-8', 'ignore')
         return O(returncode=result.returncode, stdout=stdout, stderr=stderr)
     except subprocess.TimeoutExpired as e:
-        result.kill()
+        try:
+            result.kill()
+        except PermissionError:
+            pass
         return O(returncode=255, stdout='TIMEOUT', stderr='')
 
