@@ -29,6 +29,11 @@ it is recommended that the user simply use the vagrant box directly. See the
 
 ```bash
 $ vagrant up --provision
+```
+
+To connect
+
+```
 $ vagrant ssh
 ```
 
@@ -69,11 +74,34 @@ docker version we checked is `19.03.8`
 
 ```bash
 $ docker --version
-Docker version 19.03.8, build afacb8b7f0
+Docker version 19.03.6, build 369ce74a3c
 ```
 
 The docker image installations require `sudo`. Please grant necessary
 permissions to your user.
+
+## Viewing the Jupyter notebook
+
+To view the Jupyter notebook, connect to the vagrant image
+
+```
+$ vagrant ssh
+```
+
+and inside the virtual machine, execute this command
+
+```
+vm$ jupyter notebook --ip 0.0.0.0 --port 8888
+...
+     or http://127.0.0.1:8888/?token=b7c576c237db3c7aec4e9ac30b69ef1ed6a4fb32b623c93a
+```
+
+Copy and paste the last line in your host browser. The port `8888` is forwarded
+to the host. Click the [src](http://127.0.0.1:8888/tree/src) link, and within
+that folder, click the [DDSet.ipynb](http://127.0.0.1:8888/notebooks/src/DDSet.ipynb)
+link. This will let you see the complete example already executed. You can
+restart execution by clicking on Kernel>Restart&Run All or simply clear output
+and run one box at a time.
 
 ## Initializing docker images
 
