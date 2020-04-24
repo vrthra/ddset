@@ -107,3 +107,8 @@ prune-grep:; sudo docker system prune --filter ancestor=ddset/grep || echo
 
 ls-find:; @sudo docker ps --filter ancestor=ddset/find --format 'table {{.Image}} {{.ID}} {{.Names}}'
 ls-grep:; @sudo docker ps --filter ancestor=ddset/grep --format 'table {{.Image}} {{.ID}} {{.Names}}'
+
+artifact.tar.gz:
+	cp README.md README.txt
+	tar -cf artifact.tar README.txt README.md lang src dbgbench.github.io .dbgbench Makefile
+	gzip artifact.tar
