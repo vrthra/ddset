@@ -139,13 +139,20 @@ $ python3 src/show_tree.py  results/4.lua.json -tree | less -r
 ```
 
 
-Within this file, execute this command to determine the number of chars in the
-minimum input Given in Table 1, (lua-5.3.5.4, # Chars in Min String)
+Within this file, execute this command to get the Table 1
 
 ```
-$ python3 src/show_tree.py results/4.lua.json -minstring
-Min String: 'f=load(function() end)\ninteresting={}\ninteresting[0]="A"\ndebug.upvaluejoin(f,1,f,1)'
-Chars in Min String: 83
+$ python3 src/table1.py results/4.lua.json
+
+                  Chars in MinString    Visible  Invisible    Context Sensitive  Remaining Executions
+          4.lua                   83         12         54                    5         28      19377
+```
+
+Note that the same command takes more than one file. E.g. To simply recreate
+the entire Table 1 after experiments, run:
+
+```
+$ python3 src/table1.py results/*.json
 ```
 
 
