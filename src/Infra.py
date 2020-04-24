@@ -13,6 +13,17 @@ def docker():
     return DOCKER
     # `docker ps --filter  name=c8491c11  -q`
 
+def extract(o):
+    s = o.stdout.strip()
+    return "./" +  s.split('/')[1]
+
+def find():
+    o = A.do(('sudo docker exec -it %s bash -c'% docker()).split(' ') + ['find . | grep %s' % docker()])
+    return extract(o)
+
+def grep():
+    o = A.do(('sudo docker exec -it %s bash -c' % docker()).split(' ') + ['find . | grep %s' % docker()])
+    return extract(o)
 
 def do(prefix, cmd, src, as_string=False):
     o = None

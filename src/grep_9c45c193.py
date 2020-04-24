@@ -3,7 +3,7 @@ import Infra as I
 from Abstract import PRes
 
 def my_predicate(src):
-    o = I.do('grep', 'sudo docker exec -it %s bash -c' % I.docker(), "./grep12/grep/src/%s" % src, True)
+    o = I.do('grep', 'sudo docker exec -it %s bash -c' % I.docker(), I.grep() + "/grep/src/%s" % src, True)
     os.system("stty sane")
     out = o.stdout
     if not out.strip(): return PRes.success
