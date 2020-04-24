@@ -2,7 +2,13 @@
 
 Our submission is a tool that implements the algorithm given in the paper _Abstracting Failure Inducing Inputs_.
 We provide a file `artifact.tar.gz` which contains the code to reproduce our
-results. Our evaluation partially (2 subjects out of 6) depends on the
+results. The `artifact.tar.gz` contains `src/DDSet.ipynb` which contains the
+complete algorithm explained and worked out in one simple and one complex
+example in a [Jupyter notebook](https://jupyter.org/). It can be viewed through
+either the virtual box as explained below, or can be directly viewed using any
+of the Jupyter notebook viewers including VSCode.
+
+Our evaluation partially (2 subjects out of 6) depends on the
 [DBGBench](https://dbgbench.github.io/) docker images. Since
 these are previously published artifacts, we have not included the docker images
 in our submission. The docker images are fetched automatically when the target
@@ -12,28 +18,51 @@ in our submission. The docker images are fetched automatically when the target
 
 ### RAM
 
-All experiments done on a system with 15 GB RAM.
+All experiments done on a base system with 15 GB RAM.
 
 ### Software
 
-All executables are compiled and linked in Linux Mint 19.2.
+**IMPORTANT** All executables are compiled and linked in the following vagrant
+box, with 8 GB RAM allocated. While it can be done on the base system itself,
+it is recommended that the user simply use the vagrant box directly. See the
+`Vagrantfile` for configuration.
+
+```bash
+$ vagrant up --provision
+$ vagrant ssh
+```
+
+The vagrant box had the following operating system.
 
 ```bash
 $ uname -rvmpio
-4.15.0-91-generic #92-Ubuntu SMP Fri Feb 28 11:09:48 UTC 2020 x86_64 x86_64 x86_64 GNU/Linux
+4.15.0-70-generic #79-Ubuntu SMP Tue Nov 12 10:36:11 UTC 2019 x86_64 x86_64 x86_64 GNU/Linux
 
 $ lsb_release -d
-Description:    Linux Mint 19.2 Tina
+Description:	Ubuntu 18.04.3 LTS
 ```
 
 #### Python
 
-The algorithm implementation was evaluated using Python version 3.6.9
+The algorithm implementation was evaluated using Python version 3.6.8
 
 ```bash
 $ python3 --version
-Python 3.6.9
+Python 3.6.8
 ```
+
+#### Java
+
+The interpreters except Lua require Java
+
+```
+$ java -version
+openjdk version "11.0.7" 2020-04-14
+OpenJDK Runtime Environment (build 11.0.7+10-post-Ubuntu-2ubuntu218.04)
+OpenJDK 64-Bit Server VM (build 11.0.7+10-post-Ubuntu-2ubuntu218.04, mixed mode, sharing)
+```
+
+#### Docker
 
 We also need docker for running `debgubench` for `find` and `grep` results. The
 docker version we checked is `19.03.8`
