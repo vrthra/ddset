@@ -121,6 +121,9 @@ vm$ pwd
 
 ### Initializing docker images
 
+**Note:** Docker is not required, (and hence initializing docker is not
+required) for the language experiments -- `lua`, `rhino`, `clojure` and `closure`.
+
 The following command pulls the docker images, and starts all containers.
 
 ```bash
@@ -165,6 +168,10 @@ removed after use with the following command:
 ```bash
 $ make dbgbench-clobber
 ```
+
+Note also that you can start individual docker instances separately using
+`initfind-<bugid>` or `initgrep-<bugid>` and remove them using `rmfind-<bugid>` or `rmgrep-<bugid>` 
+An example <bugid> is `54d55bba` for `grep`.
 
 ### Starting the experiments
 
