@@ -5,7 +5,7 @@ from Abstract import PRes
 
 def my_predicate(src):
     o = A.do(('sudo docker exec -it %s bash -c' % I.docker()).split(' ')  + ["echo foo foo bar > foofoobar"])
-    o = I.do('grep', 'sudo docker exec -it %s bash -c' % I.docker(), "./grep4/grep/src/%s" % src, True)
+    o = I.do('grep', 'sudo docker exec -it %s bash -c' % I.docker(), "./grep13/grep/src/%s" % src, True)
     os.system("stty sane")
     out = o.stdout
     if out.strip() == 'foo foo':
