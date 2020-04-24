@@ -109,6 +109,8 @@ ls-find:; @sudo docker ps --filter ancestor=ddset/find --format 'table {{.Image}
 ls-grep:; @sudo docker ps --filter ancestor=ddset/grep --format 'table {{.Image}} {{.ID}} {{.Names}}'
 
 artifact.tar.gz:
-	cp README.md README.txt
-	tar -cf artifact.tar README.txt README.md lang src dbgbench.github.io .dbgbench Makefile
+	rm -rf artifact && mkdir -p artifact
+	cp README.md artifact/README.txt
+	cp -r README.md lang src dbgbench.github.io .dbgbench Makefile artifact/
+	tar -cf artifact.tar artifact
 	gzip artifact.tar
