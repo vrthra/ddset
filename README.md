@@ -78,7 +78,7 @@ Docker version 19.03.6, build 369ce74a3c
 ```
 
 The docker image installations require `sudo`. Please grant necessary
-permissions to your user.
+permissions to your user if not using the virtual machine.
 
 ## Viewing the Jupyter notebook
 
