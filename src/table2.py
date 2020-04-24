@@ -15,7 +15,15 @@ def load_lines(fname):
 
 
 def table2_row(fname):
-    arr, basename = load_lines(fname)
+    arr_, basename = load_lines(fname)
+    # skip the first two because it is asserting original and empty.
+    orig, *arr = arr_
+    assert orig['res'] == 'PRes.success'
+    if arr[0]['src'] == '':
+        empty, *arr = arr
+        assert empty['src'] == ''
+        assert empty['res'] == 'PRes.failed'
+
     len_total = len(arr)
     valid = [a for a in arr if a['res'] != 'PRes.invalid']
     fail = [a for a in valid if a['res'] == 'PRes.success']
