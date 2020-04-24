@@ -29,6 +29,7 @@ Vagrant.configure("2") do |config|
     pip3 install wheel
     pip3 install graphviz
     pip3 install jupyter
+    pip3 install pudb
 
     pip3 install jupyter_contrib_nbextensions
     pip3 install jupyter_nbextensions_configurator
