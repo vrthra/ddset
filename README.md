@@ -1,7 +1,7 @@
 # Replication package for _Abstracting Failure Inducing Inputs_.
 
 We provide a file `artifact.tar.gz` which contains the code to reproduce our
-results. Our evaluation depends on the CoREBench/DBGBench docker images. Since
+results. Our evaluation depends on the CoREBench/[DBGBench](https://dbgbench.github.io/) docker images. Since
 these are published artifacts, we have not included the docker images in our
 submission. The docker images are fetched automatically when the target
 `make dbgbench-init` is called (see below).
