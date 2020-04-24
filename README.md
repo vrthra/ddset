@@ -105,6 +105,20 @@ and run one box at a time.
 
 ## Experiments
 
+First login to the virtual machine
+
+```bash
+$ vagrant ssh
+```
+
+Next, change directory to `ddset`
+
+```bash
+vm$ cd ddset
+vm$ pwd
+/home/vagrant/ddset
+```
+
 ### Initializing docker images
 
 The following command pulls the docker images, and starts all containers.
