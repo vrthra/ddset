@@ -1,9 +1,11 @@
-# Replication package for _Abstracting Failure Inducing Inputs_.
+# Replication package for _Abstracting Failure Inducing Inputs_
 
+Our submission is a tool that implements the algorithm given in the paper _Abstracting Failure Inducing Inputs_.
 We provide a file `artifact.tar.gz` which contains the code to reproduce our
-results. Our evaluation depends on the CoREBench/[DBGBench](https://dbgbench.github.io/) docker images. Since
-these are published artifacts, we have not included the docker images in our
-submission. The docker images are fetched automatically when the target
+results. Our evaluation partially (2 subjects out of 6) depends on the
+[DBGBench](https://dbgbench.github.io/) docker images. Since
+these are previously published artifacts, we have not included the docker images
+in our submission. The docker images are fetched automatically when the target
 `make dbgbench-init` is called (see below).
 
 ## Prerequisites
@@ -188,4 +190,9 @@ $ python3 src/table2.py fuzzing/4.lua.log.json
                        Valid%      FAIL%
    4.lua               100.00      98.04
 ```
+
+## How is the algorithm organized
+## How to interpret the results
+## How to add a new subject
+
 
