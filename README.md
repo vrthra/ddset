@@ -2,11 +2,11 @@
 
 Our submission is a tool that implements the algorithm given in the paper _Abstracting Failure Inducing Inputs_.
 We provide a file `artifact.tar.gz` which contains the code to reproduce our
-results. The `artifact.tar.gz` contains `src/DDSet.ipynb` which contains the
+results. The `artifact.tar.gz` contains [src/DDSet.ipynb](https://github.com/vrthra/ddset/blob/master/src/DDSet.ipynb) which contains the
 complete algorithm explained and worked out in one simple and one complex
 example in a [Jupyter notebook](https://jupyter.org/). It can be viewed through
 either the virtual box as explained below, or can be directly viewed using any
-of the Jupyter notebook viewers including VSCode.
+of the Jupyter notebook viewers including VSCode, or github ([from this link](https://github.com/vrthra/ddset/blob/master/src/DDSet.ipynb)).
 
 Our evaluation partially (2 subjects out of 6) depends on the
 [DBGBench](https://dbgbench.github.io/) docker images. Since
