@@ -116,6 +116,7 @@ def table1(args):
     rows = []
     for a in args:
         if '.log.' in a: continue
+        if '/fuzz_' in a: continue
         with open(a) as f:
             j = json.load(fp=f)
         r = table1_row(j, a)
