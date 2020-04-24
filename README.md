@@ -257,6 +257,13 @@ procedure names in the paper. Each method is thoroughly documented,
 and executions of methods can be performed to verify their behavior.
 
 ## How to interpret the results
+
+The main question being asked is, whether we can abstract any nonterminals.
+The `Visible` column specifies the number of visible nonterminals found,
+and the `Context Sensitive` specifies how many context sensitive covarying
+nonterminals could be found. The `Remaining` column specifies the number
+of characters left over after abstraction.
+
 ## How to add a new subject
 
 To add a new subject (with some bugs to abstract), one needs the following
