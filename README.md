@@ -103,7 +103,9 @@ link. This will let you see the complete example already executed. You can
 restart execution by clicking on Kernel>Restart&Run All or simply clear output
 and run one box at a time.
 
-## Initializing docker images
+## Experiments
+
+### Initializing docker images
 
 The following command pulls the docker images, and starts all containers.
 
@@ -150,7 +152,7 @@ removed after use with the following command:
 $ make dbgbench-clobber
 ```
 
-## Starting the experiments
+### Starting the experiments
 
 The experiments can be started with the following command:
 
@@ -249,7 +251,87 @@ $ python3 src/table2.py fuzzing/4.lua.log.json
 ```
 
 ## How is the algorithm organized
+
+The Jupyter notebook provided has one to one correspondence with the
+procedure names in the paper. Each method is thoroughly documented,
+and executions of methods can be performed to verify their behavior.
+
 ## How to interpret the results
 ## How to add a new subject
 
+To add a new subject (with some bugs to abstract), one needs the following
+
+* The grammar that can parse the subject in the canonical form defined by the
+  [Parser in fuzzingbook](https://fuzzingbook.org/html/Parser.html). If you
+  have an ANTLR grammar, it can be converted to the fuzzingbook format using 
+  [this project](https://github.com/vrthra/antlr2json).
+
+* The bugs you have collected
+
+* The interpreter/compiler/command that accepts some input file. 
+
+Do the following:
+
+* make a directory for your interpreter under `lang`, say `mycmd`
+* Under `lang/mycmd`, create three directories:
+  * `lang/mycmd/bugs`
+  * `lang/mycmd/compilers`
+  * `lang/mycmd/grammar`
+* Under `grammar`, place the JSON grammar that you have, and call it
+  say `lang/mycmd/grammar/mycmd.fbjson`
+* Under bugs, one file per bug, place each bugs. Say `lang/mycmd/bugs/cmd_1.cmd`
+* Under `compilers` place your compiler/command executable. Say `lang/mycmd/compilers/cmd`
+* Under `src` directory, one file per bug, add test cases with the following format
+
+```python
+import Infra as I
+from Abstract import PRes
+
+def my_predicate(src):
+    # this following line defines how the interpreter is invoked. The first
+    # string is the label, and second string is the command used to execute.
+    # src will have the source
+    o = I.do('mycmd', './lang/mycmd/compilers/cmd', src)
+
+    # Now, define the behavior you want. PRes.success means the failure was
+    # reproduced, while PRes.invalid means the input was semantically invalid
+    # and we will ignore this input. PRes.failure is a semantically valid input
+    # that could not reproduce the failure.
+
+    if o.returncode == 0: return PRes.failed
+    if o.returncode == -11: return PRes.success
+    out = o.stdout
+    if 'Segmentation fault (core dumped)' in out:
+        return PRes.success
+    elif 'stack traceback' in out:
+        return PRes.invalid
+    elif 'TIMEOUT' in out:
+        return PRes.timeout
+    return PRes.failed
+
+import sys
+if __name__ == '__main__':
+    # Here we define the paths
+    I.main('./lang/mycmd/grammar/mycmd.fbjson', './lang/mycmd/bugs/cmd_1.cmd', my_predicate)
+```
+Once this predicate is written to file say as `src/mycmd_1.py`, invoking it,
+using `python3 src/mycmd_1.py` will produce the correctly abstracted file under
+`result/cmd_1.cmd.json`.
+
+The same predicate can also be used to fuzz by producing a new file `src/fuzz_cmd_1.py` with
+the following contents
+
+```python
+
+import Fuzz as F
+import mycmd_1 as Main
+
+import sys
+if __name__ == '__main__':
+    F.main('./lang/mycmd/grammar/mycmd.fbjson', './lang/mycmd/bugs/cmd_1.cmd', Main.my_predicate)
+```
+
+Invoking this file using `python3 src/fuzz_mycmd_1.py` will produce the
+fuzz output under `fuzzing/fuzz_mycmd_1.json`, which can be inspected for
+results.
 
