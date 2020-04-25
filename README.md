@@ -91,7 +91,7 @@ $ vagrant ssh
 and inside the virtual machine, execute this command
 
 ```
-vm$ jupyter notebook --ip 0.0.0.0 --port 8888
+vm$ ./startjupyter.sh
 ...
      or http://127.0.0.1:8888/?token=b7c576c237db3c7aec4e9ac30b69ef1ed6a4fb32b623c93a
 ```
