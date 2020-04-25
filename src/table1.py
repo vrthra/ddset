@@ -120,6 +120,7 @@ def table1(args):
     mypath = 'results'
     if not args:
         args = [join(mypath, f) for f in listdir(mypath) if isfile(join(mypath, f))]
+    args = sorted(args)
     for a in args:
         if '.log.' in a: continue
         if '/fuzz_' in a: continue

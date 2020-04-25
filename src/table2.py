@@ -37,6 +37,7 @@ def table2(args):
     mypath = 'fuzzing'
     if not args:
         args = [join(mypath, f) for f in listdir(mypath) if isfile(join(mypath, f))]
+    args = sorted(args)
     for a in args:
         r = table2_row(a)
         rows.append(r)
