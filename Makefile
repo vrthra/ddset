@@ -30,14 +30,38 @@ fuzz_rhino_results_src=$(addsuffix .log,$(addprefix results/fuzz_rhino_,$(rhino_
 fuzz_closure_results_src=$(addsuffix .log,$(addprefix results/fuzz_closure_,$(closure_bugs)))
 fuzz_clojure_results_src=$(addsuffix .log,$(addprefix results/fuzz_clojure_,$(clojure_bugs)))
 
+stop_find: $(addprefix stop_,$(find_bugs))
+	@echo done.
+
+stop_grep: $(addprefix stop_,$(grep_bugs))
+	@echo done.
+
+$(addprefix start_,$(grep_bugs)):
+	sudo docker start $(subst start_,,$@)
+
+$(addprefix stop_,$(grep_bugs)):
+	sudo docker stop $(subst stop_,,$@)
+
+$(addprefix start_,$(find_bugs)):
+	sudo docker start $(subst start_,,$@)
+
+$(addprefix stop_,$(find_bugs)):
+	sudo docker stop $(subst stop_,,$@)
+
 unbuffer= #unbuffer -p
 
 results/reduce_%.log: src/%.py | results
+	@- $(MAKE) stop_$(subst find_,,$*)
+	@- $(MAKE) start_$(subst find_,,$*)
 	time $(python) $< 2>&1 | $(unbuffer) tee $@_
+	@- $(MAKE) stop_$(subst find_,,$*)
 	mv $@_ $@
 
 results/fuzz_%.log: src/fuzz_%.py results/reduce_%.log
+	@- $(MAKE) stop_$(subst find_,,$*)
+	@- $(MAKE) start_$(subst find_,,$*)
 	time $(python) $< 2>&1 | $(unbuffer) tee $@_
+	@- $(MAKE) stop_$(subst find_,,$*)
 	mv $@_ $@
 
 reduce_find: $(find_results_src); @echo done
@@ -96,8 +120,16 @@ dbgbench-clobber:
 	-$(MAKE) rm-grep
 	rm -rf dbgbench.github.io .dbgbench
 
-init-find: .dbgbench; $(MAKE) -C dbgbench.github.io/docker init-find find_bugs="$(find_bugs)"
-init-grep: .dbgbench; $(MAKE) -C dbgbench.github.io/docker init-grep grep_bugs="$(grep_bugs)"
+init-find: .dbgbench;
+	for i in $(find_bugs); do \
+		$(MAKE) -C dbgbench.github.io/docker initfind-$$i; \
+		sudo docker stop $$i; \
+		done
+init-grep: .dbgbench;
+	for i in $(grep_bugs); do \
+		$(MAKE) -C dbgbench.github.io/docker initgrep-$$i; \
+		sudo docker stop $$i; \
+		done
 
 rm-find:; $(MAKE) -C dbgbench.github.io/docker rm-find
 rm-grep:; $(MAKE) -C dbgbench.github.io/docker rm-grep
@@ -105,8 +137,8 @@ rm-grep:; $(MAKE) -C dbgbench.github.io/docker rm-grep
 prune-find:; sudo docker system prune --filter ancestor=ddset/find || echo
 prune-grep:; sudo docker system prune --filter ancestor=ddset/grep || echo
 
-ls-find:; @sudo docker ps --filter ancestor=ddset/find --format 'table {{.Image}} {{.ID}} {{.Names}}'
-ls-grep:; @sudo docker ps --filter ancestor=ddset/grep --format 'table {{.Image}} {{.ID}} {{.Names}}'
+ls-find:; @sudo docker ps -a --filter ancestor=ddset/find --format 'table {{.Image}} {{.ID}} {{.Names}} {{.Status}}'
+ls-grep:; @sudo docker ps -a --filter ancestor=ddset/grep --format 'table {{.Image}} {{.ID}} {{.Names}} {{.Status}}'
 
 artifact.tar.gz:
 	rm -rf artifact && mkdir -p artifact/ddset
