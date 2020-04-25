@@ -238,6 +238,13 @@ red.
 $ python3 src/show_tree.py  results/4.lua.json -tree | less -r
 ```
 
+If your terminal does not support colors, the tree can be drawn using
+simple ASCII too.
+
+```bash
+$ python3 src/show_tree.py  results/4.lua.json
+```
+
 The `table1.py` command can be used to inspect a single file as below:
 
 ```bash

@@ -64,11 +64,11 @@ if __name__ == '__main__':
     with open(sys.argv[1]) as f:
         res = json.load(fp=f)
         abs_t = context(coalesce(res['abs_t']))
-        xt = os.getenv('TERM')
-        if 'xterm' in xt:
-            opt = T.GRAPHIC_OPTIONS
-        else:
-            opt = T.ASCII_OPTIONS
+        #xt = os.getenv('TERM')
+        #if 'xterm' in xt:
+        #    opt = T.GRAPHIC_OPTIONS
+        #else:
+        #    opt = T.ASCII_OPTIONS
 
         if len(sys.argv) > 2:
             if sys.argv[2] == '-tree':
@@ -76,12 +76,12 @@ if __name__ == '__main__':
                 print('min:', repr(res['min_s']))
                 print('abs:', repr(res['abs_s']))
                 print()
-                print(T.format_tree(abs_t,format_node=color_format_node, get_children=lambda x: x[1], options=opt))
+                print(T.format_tree(abs_t,format_node=color_format_node, get_children=lambda x: x[1], options=T.GRAPHIC_OPTIONS))
             elif sys.argv[2] == '-json':
                 print(json.dumps(abs_t, indent=4))
             elif sys.argv[2] == '-minstring':
                 print('Min String:', repr(res['min_s']))
                 print('Chars in Min String:', len(res['min_s']))
         else:
-            print(T.format_tree(abs_t,format_node=format_node, get_children=lambda x: x[1], options=opt, special=markup))
+            print(T.format_tree(abs_t,format_node=format_node, get_children=lambda x: x[1], options=T.ASCII_OPTIONS, special=markup))
 
