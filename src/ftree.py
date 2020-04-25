@@ -80,8 +80,10 @@ def _format_tree(node, format_node, get_children, options, prefix=u''):
         for result in tree:
             yield result
 
-def format_tree(node, format_node, get_children, options=GRAPHIC_OPTIONS):
+def format_tree(node, format_node, get_children, options=GRAPHIC_OPTIONS, special=None):
     lines = itertools.chain( [format_node(node)], _format_tree(node, format_node, get_children, options), [u''],)
+    if special is not None:
+        lines = [special(l) for l in lines]
     return u'\n'.join(lines)
 
 if __name__ == '__main__':
