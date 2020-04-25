@@ -35,7 +35,8 @@ Vagrant.configure("2") do |config|
     pip3 install jupyter_nbextensions_configurator
     jupyter contrib nbextension install --sys-prefix
     jupyter nbextension enable toc2/main --sys-prefix
-    echo jupyter notebook --ip 0.0.0.0 --port 8888 > /home/vagrant/startjupyter.sh
+    echo cd /home/vagrant/ddset >  /home/vagrant/startjupyter.sh
+    echo jupyter notebook --ip 0.0.0.0 --port 8888 >> /home/vagrant/startjupyter.sh
     chmod +x /home/vagrant/startjupyter.sh
   SHELL
 end
