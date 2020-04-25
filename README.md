@@ -208,7 +208,7 @@ If all experiments have finished, the Table 1 can be created with the
 following command:
 
 ```bash
-$ python3 src/table1.py results/*.json
+$ python3 src/table1.py
                   Chars in MinString    Visible  Invisible    Context Sensitive  Remaining Executions
 bugid …
 ```
@@ -253,7 +253,7 @@ For each bug, the execution details are captured under the directory `fuzzing`.
 The Table 2 can be created with the following command:
 
 ```bash
-$ python3 src/table2.py fuzzing/*.json
+$ python3 src/table2.py
                        Valid%      FAIL%
 bugid …
 ```

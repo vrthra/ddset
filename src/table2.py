@@ -29,8 +29,14 @@ def table2_row(fname):
     fail = [a for a in valid if a['res'] == 'PRes.success']
     return (basename[0:-len('.log')], len(valid)*100.0/len_total, len(fail)*100.0/len(valid))
 
+from os import listdir
+from os.path import isfile, join
+
 def table2(args):
     rows = []
+    mypath = 'fuzzing'
+    if not args:
+        args = [join(mypath, f) for f in listdir(mypath) if isfile(join(mypath, f))]
     for a in args:
         r = table2_row(a)
         rows.append(r)

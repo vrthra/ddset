@@ -112,8 +112,14 @@ def table1_row(j, fname):
 
     return (basename, c, len_visible_nt, len_invisible, len_context_sensitive_nt, len_t, e_count)
 
+from os import listdir
+from os.path import isfile, join
+
 def table1(args):
     rows = []
+    mypath = 'results'
+    if not args:
+        args = [join(mypath, f) for f in listdir(mypath) if isfile(join(mypath, f))]
     for a in args:
         if '.log.' in a: continue
         if '/fuzz_' in a: continue
