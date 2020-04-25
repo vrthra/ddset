@@ -30,6 +30,10 @@ fuzz_rhino_results_src=$(addsuffix .log,$(addprefix results/fuzz_rhino_,$(rhino_
 fuzz_closure_results_src=$(addsuffix .log,$(addprefix results/fuzz_closure_,$(closure_bugs)))
 fuzz_clojure_results_src=$(addsuffix .log,$(addprefix results/fuzz_clojure_,$(clojure_bugs)))
 
+start_%:; @echo done
+stop_%:; @echo done
+
+
 stop_find: $(addprefix stop_,$(find_bugs))
 	@echo done.
 
