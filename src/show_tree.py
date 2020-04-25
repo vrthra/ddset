@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import ftree as T
 import Abstract as A
 

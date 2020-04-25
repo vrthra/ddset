@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # Chars in Mini String
 # Visible Nonterminals
 # Invisible Nonterminals
