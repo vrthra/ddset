@@ -177,3 +177,8 @@ box-remove:
 
 show-ports:
 	 sudo netstat -ln --program | grep 8888
+
+upload:
+	rm -rf anonymous.issta2020 && mkdir -p anonymous.issta2020
+	cp ddset.box anonymous.issta2020
+	rclone --contimeout=24h -vv copy anonymous.issta2020 anonymous-issta2020:
