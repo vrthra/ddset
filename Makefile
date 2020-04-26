@@ -148,10 +148,32 @@ prune-grep:; sudo docker system prune --filter ancestor=ddset/grep || echo
 ls-find:; @sudo docker ps -a --filter ancestor=ddset/find --format 'table {{.Image}} {{.ID}} {{.Names}} {{.Status}}'
 ls-grep:; @sudo docker ps -a --filter ancestor=ddset/grep --format 'table {{.Image}} {{.ID}} {{.Names}} {{.Status}}'
 
-artifact.tar.gz:
+artifact.tar.gz: Vagrantfile Makefile
 	rm -rf artifact && mkdir -p artifact/ddset
 	cp README.md artifact/README.txt
 	cp -r README.md lang src dbgbench.github.io .dbgbench Makefile Vagrantfile artifact/ddset
 	cp -r Vagrantfile artifact/
 	tar -cf artifact.tar artifact
 	gzip artifact.tar
+
+
+
+# PACKAGING
+box-up: artifact.tar.gz
+	cd artifact && vagrant up
+	cd artifact && vagrant ssh -c 'cd /vagrant; tar -cpf ~/ddset.tar ddset ; cd ~/; tar -xpf ~/ddset.tar'
+	cd artifact && vagrant ssh -c 'cd ~/ddset && make dbgbench-init'
+	cd artifact && vagrant package --output ../ddset.box --vagrantfile ../Vagrantfile.new
+
+box-add:
+	rm -rf vtest && mkdir -p vtest
+	cd vtest && vagrant box add ddset ../ddset.box
+	cd vtest && vagrant init ddset
+	cd vtest && vagrant up
+
+box-remove:
+	- vagrant destroy $$(vagrant global-status | grep ddset | sed -e 's# .*##g')
+	vagrant box remove ddset
+
+show-ports:
+	 sudo netstat -ln --program | grep 8888
