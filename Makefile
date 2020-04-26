@@ -41,12 +41,14 @@ stop_grep: $(addprefix stop_,$(grep_bugs))
 	@echo done.
 
 $(addprefix start_,$(grep_bugs)):
+	sudo docker stop $(subst start_,,$@)
 	sudo docker start $(subst start_,,$@)
 
 $(addprefix stop_,$(grep_bugs)):
 	sudo docker stop $(subst stop_,,$@)
 
 $(addprefix start_,$(find_bugs)):
+	sudo docker stop $(subst start_,,$@)
 	sudo docker start $(subst start_,,$@)
 
 $(addprefix stop_,$(find_bugs)):
@@ -55,17 +57,19 @@ $(addprefix stop_,$(find_bugs)):
 unbuffer= #unbuffer -p
 
 results/reduce_%.log: src/%.py | results
-	@- $(MAKE) stop_$(subst find_,,$*)
 	@- $(MAKE) start_$(subst find_,,$*)
+	@- $(MAKE) start_$(subst grep_,,$*)
 	time $(python) $< 2>&1 | $(unbuffer) tee $@_
 	@- $(MAKE) stop_$(subst find_,,$*)
+	@- $(MAKE) stop_$(subst grep_,,$*)
 	mv $@_ $@
 
 results/fuzz_%.log: src/fuzz_%.py results/reduce_%.log
-	@- $(MAKE) stop_$(subst find_,,$*)
 	@- $(MAKE) start_$(subst find_,,$*)
+	@- $(MAKE) start_$(subst grep_,,$*)
 	time $(python) $< 2>&1 | $(unbuffer) tee $@_
 	@- $(MAKE) stop_$(subst find_,,$*)
+	@- $(MAKE) stop_$(subst grep_,,$*)
 	mv $@_ $@
 
 reduce_find: $(find_results_src); @echo done
