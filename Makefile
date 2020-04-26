@@ -166,8 +166,8 @@ box-up: artifact.tar.gz
 	cd artifact && vagrant package --output ../ddset.box --vagrantfile ../Vagrantfile.new
 
 box-add:
-	rm -rf vtest && mkdir -p vtest
-	cd vtest && vagrant box add ddset ../ddset.box
+	rm -rf vtest && mkdir -p vtest && cp ddset.box vtest
+	cd vtest && vagrant box add ddset ./ddset.box
 	cd vtest && vagrant init ddset
 	cd vtest && vagrant up
 
@@ -180,5 +180,5 @@ show-ports:
 
 upload:
 	rm -rf anonymous.issta2020 && mkdir -p anonymous.issta2020
-	cp ddset.box anonymous.issta2020
+	mv ddset.box anonymous.issta2020
 	rclone --contimeout=24h -vv copy anonymous.issta2020 anonymous-issta2020:
