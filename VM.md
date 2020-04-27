@@ -7,6 +7,10 @@ We provide the virtual machine [ddset](https://drive.google.com/open?id=1WC45zoZ
 which contains the complete artifacts necessary to reproduce our findings.
 We describe the process of invoking the virtual machine below.
 
+We also note that if you are unable to download the vagrant box (it is 7.3 GB),
+you can also take a look at a complete worked out example given
+[here](https://github.com/vrthra/ddset/blob/master/src/DDSet.ipynb) (hosted on Github).
+
 ## Using the VM.
 
 ### Software
@@ -95,9 +99,13 @@ vm$ free -g
 Mem:              7           0           7           0           0           7
 Swap:             1           0           1
 
+```
+
+## A complete example
+
+```bash
 vm$ ls
 ddset  ddset.tar  startjupyter.sh
-
 ```
 
 The main experiments are in `ddset` directory in the VM,
@@ -108,7 +116,7 @@ example in a [Jupyter notebook](https://jupyter.org/). It can be viewed through
 either the virtual box as explained below, or can be directly viewed using any
 of the Jupyter notebook viewers including VSCode, or github ([from this link](https://github.com/vrthra/ddset/blob/master/src/DDSet.ipynb)).
 
-## Viewing the Jupyter notebook
+### Viewing the Jupyter notebook
 
 To view the Jupyter notebook, connect to the vagrant image if you haven't
 already connected.
