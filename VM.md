@@ -42,10 +42,10 @@ leading `$` and the other lines indicate the expected output).
 
 ```bash
 $ du -ksh ddset.box
-7,3G  ddset.box
+7,4G  ddset.box
 
 $ md5sum ddset.box
-ef0ed0a10bfa8b3ec38c7a5c42a2ed44  ddset.box
+b3242730e61126f25fda18d63ca8a0cd ddset.box
 ```
 
 #### Importing the box
