@@ -4,8 +4,9 @@ Our submission is a tool that implements the algorithm given in the paper
 _Abstracting Failure Inducing Inputs_.
 
 We provide the virtual machine [ddset](https://drive.google.com/open?id=1WC45zoZHhT1OYKmurpKGW4xBCxhuBTDr)
-which contains the complete artifacts necessary to reproduce our findings.
-We describe the process of invoking the virtual machine below.
+(hosted on google drive) which contains the complete artifacts necessary to
+reproduce our findings. We describe the process of invoking the virtual machine
+below.
 
 We also note that if you are unable to download the vagrant box (it is 7.3 GB),
 you can also take a look at a complete worked out example given
