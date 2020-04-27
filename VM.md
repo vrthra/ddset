@@ -9,8 +9,8 @@ reproduce our findings. We describe the process of invoking the virtual machine
 below.
 
 We also note that if you are unable to download the vagrant box (it is 7.3 GB),
-you can also take a look at a complete worked out example given
-[here](https://github.com/vrthra/ddset/blob/master/src/DDSet.ipynb) (hosted on Github).
+you can also take a look at a complete worked out example as a Jupyter notebook
+given [here](https://github.com/vrthra/ddset/blob/master/src/DDSet.ipynb) (hosted on Github).
 
 ## Using the VM.
 
