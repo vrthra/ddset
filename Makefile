@@ -170,6 +170,7 @@ ddset.box: artifact.tar.gz
 	cd artifact && vagrant package --output ../ddset.box --vagrantfile ../Vagrantfile.new
 
 box-add: ddset.box
+	-vagrant destroy $$(vagrant global-status | grep ddset | sed -e 's# .*##g')
 	rm -rf vtest && mkdir -p vtest && cp ddset.box vtest
 	cd vtest && vagrant box add ddset ./ddset.box
 	cd vtest && vagrant init ddset
@@ -187,12 +188,13 @@ show-ports:
 	 sudo netstat -ln --program | grep 8888
 
 rupload:
-	rm -rf anonymous.issta2020 && mkdir -p anonymous.issta2020
-	mv ddset.box anonymous.issta2020
-	rclone --contimeout=24h -vv copy anonymous.issta2020 anonymous-issta2020:issta2020/
+	rm -rf ddset.issta2020 && mkdir -p ddset.issta2020
+	cp ddset.box ddset.issta2020
+	md5sum ddset.issta2020/ddset.box
+	rclone --contimeout=24h -vv copy ddset.issta2020 ddset-issta2020:issta2020/
 
 rls:
-	rclone ls anonymous-issta2020:
+	rclone ls ddset-issta2020:
 
 rrm:
-	rclone delete anonymous-issta2020:issta2020/ddset.box
+	rclone delete ddset-issta2020:issta2020/ddset.box
