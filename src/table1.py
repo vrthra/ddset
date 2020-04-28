@@ -60,7 +60,7 @@ def top_nt(tree):
         assert name != '<>'
         #if name == '<>': return ('<>', name) # skip
         return [(name, v)]
-    if A.is_token(name): return [(name, v)]
+    if A.is_token(name): return [(v, v)]
     for c in children:
         res_ = top_nt(c)
         res.extend(res_)
@@ -97,13 +97,17 @@ def table1_row(j, fname):
     s_ = ''.join(sarr)
     assert _s == s_
 
-    all_nt = [(name,s) for name, s in v if name]
+    all_nt = [(name,s) for name, s in v if name and A.is_nt(name)]
     visible_nt = [name for name, s in all_nt if len(name) != 2 and len(s.strip()) != 0 and name[1] != '_']
     len_visible_nt = len(visible_nt)
 
     context_sensitive_nt = [name for name, s in all_nt if len(name) != 2 and len(s.strip()) != 0 and name[1] == '$']
+    cs_keys = set(context_sensitive_nt)
+    cs_sep = {}
+    for k in cs_keys:
+        cs_sep[k] = len([kk for kk in context_sensitive_nt if k == kk])
 
-    len_context_sensitive_nt = len(context_sensitive_nt)
+    len_context_sensitive_nt = '+'.join([str(v) for k,v in cs_sep.items()]) + "=" + str(len(context_sensitive_nt))
 
     len_invisible = len(all_nt) - len_visible_nt
 
