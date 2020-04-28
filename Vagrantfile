@@ -31,5 +31,13 @@ Vagrant.configure("2") do |config|
     echo cd /home/vagrant/ddset >  /home/vagrant/startjupyter.sh
     echo jupyter notebook --ip 0.0.0.0 --port 8888 >> /home/vagrant/startjupyter.sh
     chmod +x /home/vagrant/startjupyter.sh
+
+    echo cd /home/vagrant/ddset >  /home/vagrant/table1.sh
+    echo python3 src/table1.py >>  /home/vagrant/table1.sh
+    chmod +x /home/vagrant/table1.sh
+
+    echo cd /home/vagrant/ddset >  /home/vagrant/table2.sh
+    echo python3 src/table2.py >>  /home/vagrant/table2.sh
+    chmod +x /home/vagrant/table2.sh
   SHELL
 end
