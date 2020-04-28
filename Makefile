@@ -1,7 +1,10 @@
 python=python3
 
 clean: ; rm -rf *.reduce.log *.fuzz.log results fuzzing
-clobber: clean; rm -rf .db
+clobber: clean;
+	-$(MAKE) box-remove
+	-rm -rf artifact artifact.tar.gz
+	-rm -rf .db
 results:; mkdir -p results
 
 find_bugs=07b941b1 93623752 c8491c11 dbcb10e9
@@ -159,26 +162,37 @@ artifact.tar.gz: Vagrantfile Makefile
 
 
 # PACKAGING
-box-up: artifact.tar.gz
+box-create: ddset.box
+ddset.box: artifact.tar.gz
 	cd artifact && vagrant up
-	cd artifact && vagrant ssh -c 'cd /vagrant; tar -cpf ~/ddset.tar ddset ; cd ~/; tar -xpf ~/ddset.tar'
+	cd artifact && vagrant ssh -c 'cd /vagrant; tar -cpf ~/ddset.tar ddset ; cd ~/; tar -xpf ~/ddset.tar; rm -f ~/ddset.tar'
 	cd artifact && vagrant ssh -c 'cd ~/ddset && make dbgbench-init'
 	cd artifact && vagrant package --output ../ddset.box --vagrantfile ../Vagrantfile.new
 
-box-add:
+box-add: ddset.box
 	rm -rf vtest && mkdir -p vtest && cp ddset.box vtest
 	cd vtest && vagrant box add ddset ./ddset.box
 	cd vtest && vagrant init ddset
 	cd vtest && vagrant up
 
+box-status:
+	vagrant global-status | grep ddset
+	vagrant box list | grep ddset
+
 box-remove:
-	- vagrant destroy $$(vagrant global-status | grep ddset | sed -e 's# .*##g')
+	-vagrant destroy $$(vagrant global-status | grep ddset | sed -e 's# .*##g')
 	vagrant box remove ddset
 
 show-ports:
 	 sudo netstat -ln --program | grep 8888
 
-upload:
+rupload:
 	rm -rf anonymous.issta2020 && mkdir -p anonymous.issta2020
 	mv ddset.box anonymous.issta2020
-	rclone --contimeout=24h -vv copy anonymous.issta2020 anonymous-issta2020:
+	rclone --contimeout=24h -vv copy anonymous.issta2020 anonymous-issta2020:issta2020/
+
+rls:
+	rclone ls anonymous-issta2020:
+
+rrm:
+	rclone delete anonymous-issta2020:issta2020/ddset.box
