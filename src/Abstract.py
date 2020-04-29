@@ -471,16 +471,33 @@ def mark_concrete(tree): # TODO
 
 gen_counter = 0
 def isolation(tree, grammar, predicate, max_checks):
+    def _path(v): return ','.join([str(i) for i in v[0]])
+    def is_child(a, b):
+        return len(a[0]) > len(b[0]) and _path(a).startswith(_path(b)) # a is child of b
+
     global gen_counter
     unverified = [([], St.unchecked)]
     verified = []
+    original = []
     while unverified:
         v = unverified.pop(0)
         if LOG:
             node = get_child(tree, v[0])
             print(gen_counter, 'isolation:', node[0], v[1])
             gen_counter += 1
-        newpaths = abstraction(v, tree, grammar, predicate, unverified, max_checks)
+        _original = list(original)
+        original.append(v)
+
+        _original = [o for o in _original if not is_child(v, o)]
+
+        # remove from _original that is parent of any of itself.
+        _original = [x for x in _original if not [o for o in _original if is_child(x, o)]]
+
+        # next we remove from unverified any that is child of any in _original
+        _unverified = list(unverified)
+        _unverified = [u for u in _unverified if not [o for o in _original if is_child(u, o)]]
+
+        newpaths = abstraction(v, tree, grammar, predicate, sorted(_unverified + _original), max_checks)
         print('current paths:')
         for p in newpaths:
             node = get_child(tree, p[0])
