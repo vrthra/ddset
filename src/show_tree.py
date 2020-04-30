@@ -83,6 +83,7 @@ if __name__ == '__main__':
             elif sys.argv[2] == '-minstring':
                 print('Min String:', repr(res['min_s']))
                 print('Chars in Min String:', len(res['min_s']))
+                print('Abstracted:', repr(res['abs_s']))
         else:
             print(T.format_tree(abs_t,format_node=format_node, get_children=lambda x: x[1], options=T.ASCII_OPTIONS, special=markup))
 
