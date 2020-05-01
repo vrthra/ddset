@@ -3,7 +3,7 @@
 Our submission is a tool that implements the algorithm given in the paper
 _Abstracting Failure Inducing Inputs_.
 
-We provide the virtual machine [ddset](https://drive.google.com/open?id=1qFw3DCM7qTqpo00FycGyYIW0pQ2l5-QC)
+We provide the virtual machine [ddset](https://drive.google.com/open?id=19TDxgIeQ7ane2fr67H1gYPSaKKxmqeDX)
 (hosted on google drive) which contains the complete artifacts necessary to
 reproduce our findings. We describe the process of invoking the virtual machine
 below.
@@ -31,7 +31,7 @@ local port 8888 to the host machine.
 
 Next, download the vagrant box from the following link:
 
-https://drive.google.com/open?id=1qFw3DCM7qTqpo00FycGyYIW0pQ2l5-QC
+https://drive.google.com/open?id=19TDxgIeQ7ane2fr67H1gYPSaKKxmqeDX
 
 Unfortunately, due to the way google drive works, you need to navigate to that
 link using a browser, and click on the file. There is no fail-safe command-line.
@@ -45,7 +45,7 @@ $ du -ksh ddset.box
 7,4G  ddset.box
 
 $ md5sum ddset.box
-13f342863834e48b5cf679dd04199a34 ddset.box
+3fa1ef8cbeaef2ebf5cbe62263a2dbe0 ddset.box
 ```
 
 #### Importing the box

@@ -8,7 +8,7 @@ clobber: clean;
 results:; mkdir -p results
 
 find_bugs=07b941b1 93623752 c8491c11 dbcb10e9
-grep_bugs=3c3bdace 54d55bba 8f08d8e2 9c45c193
+grep_bugs=3c3bdace 54d55bba 9c45c193
 
 closure_bugs=2808 2842 2937 3178 3379 1978
 clojure_bugs=2092 2345 2450 2473 2518 2521
@@ -156,8 +156,9 @@ artifact.tar.gz: Vagrantfile Makefile
 	cp README.md artifact/README.txt
 	cp -r README.md lang src dbgbench.github.io .dbgbench Makefile Vagrantfile artifact/ddset
 	cp -r Vagrantfile artifact/
-	tar -cf artifact.tar artifact
-	gzip artifact.tar
+	tar -cf artifact1.tar artifact
+	gzip artifact1.tar
+	mv artifact1.tar.gz artifact.tar.gz
 
 
 
@@ -167,7 +168,11 @@ ddset.box: artifact.tar.gz
 	cd artifact && vagrant up
 	cd artifact && vagrant ssh -c 'cd /vagrant; tar -cpf ~/ddset.tar ddset ; cd ~/; tar -xpf ~/ddset.tar; rm -f ~/ddset.tar'
 	cd artifact && vagrant ssh -c 'cd ~/ddset && make dbgbench-init'
-	cd artifact && vagrant package --output ../ddset.box --vagrantfile ../Vagrantfile.new
+	cd artifact && vagrant package --output ../ddset1.box --vagrantfile ../Vagrantfile.new
+	mv ddset1.box ddset.box
+
+box-hash:
+	md5sum ddset.box
 
 box-add: ddset.box
 	-vagrant destroy $$(vagrant global-status | grep ddset | sed -e 's# .*##g')
@@ -187,14 +192,24 @@ box-remove:
 show-ports:
 	 sudo netstat -ln --program | grep 8888
 
+box-connect1:
+	cd artifact; vagrant ssh
+box-connect2:
+	cd vtest; vagrant ssh
+
+REMOTE=ddset-issta2020:
+REMOTE=anonymous-issta2020:
+
 rupload:
 	rm -rf ddset.issta2020 && mkdir -p ddset.issta2020
 	cp ddset.box ddset.issta2020
-	md5sum ddset.issta2020/ddset.box
-	rclone --contimeout=24h -vv copy ddset.issta2020 ddset-issta2020:issta2020/
+	rclone --contimeout=24h -v copy ddset.issta2020 $(REMOTE)issta2020/
 
 rls:
-	rclone ls ddset-issta2020:
+	rclone ls $(REMOTE)
 
 rrm:
-	rclone delete ddset-issta2020:issta2020/ddset.box
+	rclone delete $(REMOTE)issta2020/ddset.box
+
+rlink:
+	rclone link $(REMOTE)issta2020/

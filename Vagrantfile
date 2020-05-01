@@ -39,5 +39,14 @@ Vagrant.configure("2") do |config|
     echo cd /home/vagrant/ddset >  /home/vagrant/table2.sh
     echo python3 src/table2.py >>  /home/vagrant/table2.sh
     chmod +x /home/vagrant/table2.sh
+
+    echo cd /home/vagrant/ddset >  /home/vagrant/starttests.sh
+    echo make all >>  /home/vagrant/starttests.sh
+    chmod +x /home/vagrant/starttests.sh
+
+    echo cd /home/vagrant/ddset >  /home/vagrant/showresults.sh
+    echo 'find results/*.json | grep -v log | while read i; do echo $i; python3 ./src/show_tree.py $i -minstring; echo ; done'  >>  /home/vagrant/showresults.sh
+    chmod +x /home/vagrant/showresults.sh
+
   SHELL
 end
