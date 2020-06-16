@@ -3,8 +3,8 @@
 Our submission is a tool that implements the algorithm given in the paper
 _Abstracting Failure Inducing Inputs_.
 
-We provide the virtual machine [ddset](https://drive.google.com/open?id=19TDxgIeQ7ane2fr67H1gYPSaKKxmqeDX)
-(hosted on google drive) which contains the complete artifacts necessary to
+We provide the virtual machine [ddset](https://doi.org/10.5281/zenodo.3895797)
+which contains the complete artifacts necessary to
 reproduce our findings. We describe the process of invoking the virtual machine
 below.
 
@@ -29,12 +29,11 @@ local port 8888 to the host machine.
 
 #### Download
 
-Next, download the vagrant box from the following link:
+Next, download the vagrant box from the following DOI:
 
-https://drive.google.com/open?id=19TDxgIeQ7ane2fr67H1gYPSaKKxmqeDX
 
-Unfortunately, due to the way google drive works, you need to navigate to that
-link using a browser, and click on the file. There is no fail-safe command-line.
+
+[![10.5281/zenodo.3895797](https://zenodo.org/badge/DOI/10.5281/zenodo.3895797.svg)](https://doi.org/10.5281/zenodo.3895797)
 
 This produces a file called `ddset.box` which is 7.3 GB in size, and should have
 the following _md5_ checksum. (The commands in the host system are indicated by
