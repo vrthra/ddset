@@ -213,3 +213,12 @@ rrm:
 
 rlink:
 	rclone link $(REMOTE)issta2020/
+
+VM=
+
+vm-list:
+	VBoxManage list vms
+
+vm-remove:
+	-VBoxManage startvm $(VM)  --type emergencystop
+	VBoxManage unregistervm $(VM) -delete
