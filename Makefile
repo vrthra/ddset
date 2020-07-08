@@ -151,7 +151,7 @@ prune-grep:; sudo docker system prune --filter ancestor=ddset/grep || echo
 ls-find:; @sudo docker ps -a --filter ancestor=ddset/find --format 'table {{.Image}} {{.ID}} {{.Names}} {{.Status}}'
 ls-grep:; @sudo docker ps -a --filter ancestor=ddset/grep --format 'table {{.Image}} {{.ID}} {{.Names}} {{.Status}}'
 
-artifact.tar.gz: Vagrantfile Makefile
+artifact.tar.gz: Vagrantfile
 	rm -rf artifact && mkdir -p artifact/ddset
 	cp README.md artifact/README.txt
 	cp -r README.md lang src dbgbench.github.io .dbgbench Makefile Vagrantfile artifact/ddset
