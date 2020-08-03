@@ -4,7 +4,6 @@ from enum import Enum
 from Parser import EarleyParser as Parser
 from Fuzzer import LimitFuzzer as LimitFuzzer
 import random
-random.seed(0)
 MAX_TRIES_FOR_ABSTRACTION = 100
 
 class PRes(str, Enum):
@@ -68,6 +67,10 @@ def add_to_pq(tup, q):
     # heap smallest first
     heapq.heappush(q, (n, m, -ECOUNT, tup))
     ECOUNT += 1
+    
+def reset_pq():
+    global ECOUNT
+    ECOUNT = 0
 
 def nt_group(tree, all_nodes=None):
     if all_nodes is None: all_nodes = {}
@@ -234,55 +237,56 @@ def generate_testcase(abstract_tree, grammar):
     return s
 
 #=======================DRIVER===============================================
+if __name__ == '__main__':
+    random.seed(0)
+    EXPR_GRAMMAR = {'<start>': [['<expr>']],
+     '<expr>': [['<term>', ' + ', '<expr>'],
+      ['<term>', ' - ', '<expr>'],
+      ['<term>']],
+     '<term>': [['<factor>', ' * ', '<term>'],
+      ['<factor>', ' / ', '<term>'],
+      ['<factor>']],
+     '<factor>': [['+', '<factor>'],
+      ['-', '<factor>'],
+      ['(', '<expr>', ')'],
+      ['<integer>', '.', '<integer>'],
+      ['<integer>']],
+     '<integer>': [['<digit>', '<integer>'], ['<digit>']],
+     '<digit>': [['0'], ['1'], ['2'], ['3'], ['4'], ['5'], ['6'], ['7'], ['8'], ['9']]}
 
-EXPR_GRAMMAR = {'<start>': [['<expr>']],
- '<expr>': [['<term>', ' + ', '<expr>'],
-  ['<term>', ' - ', '<expr>'],
-  ['<term>']],
- '<term>': [['<factor>', ' * ', '<term>'],
-  ['<factor>', ' / ', '<term>'],
-  ['<factor>']],
- '<factor>': [['+', '<factor>'],
-  ['-', '<factor>'],
-  ['(', '<expr>', ')'],
-  ['<integer>', '.', '<integer>'],
-  ['<integer>']],
- '<integer>': [['<digit>', '<integer>'], ['<digit>']],
- '<digit>': [['0'], ['1'], ['2'], ['3'], ['4'], ['5'], ['6'], ['7'], ['8'], ['9']]}
-
-def expr_double_paren(inp):
-    if re.match(r'.*[(][(].*[)][)].*', inp):
-        return PRes.success
-    return PRes.failed
-
-
-my_input = '1 + ((2 * 3 / 4))'
-expr_parser = Parser(EXPR_GRAMMAR, start_symbol='<start>', canonical=True)
-parsed_expr = list(expr_parser.parse(my_input))[0]
-er = reduction(parsed_expr, EXPR_GRAMMAR, expr_double_paren)
+    def expr_double_paren(inp):
+        if re.match(r'.*[(][(].*[)][)].*', inp):
+            return PRes.success
+        return PRes.failed
 
 
-vals = generalize(er, [], [], EXPR_GRAMMAR, expr_double_paren)
-ta = get_abstract_tree(er, vals)
-s = tree_to_str_a(ta)
-print(s)
-for i in range(10):
-    v = generate_testcase(ta, EXPR_GRAMMAR)
-    print(v)
-print()
-print()
-def expr_multiply(inp):
-    if re.match(r'.*[*].*', inp):
-        return PRes.success
-    return PRes.failed
+    my_input = '1 + ((2 * 3 / 4))'
+    expr_parser = Parser(EXPR_GRAMMAR, start_symbol='<start>', canonical=True)
+    parsed_expr = list(expr_parser.parse(my_input))[0]
+    er = reduction(parsed_expr, EXPR_GRAMMAR, expr_double_paren)
 
-er = reduction(parsed_expr, EXPR_GRAMMAR, expr_multiply)
 
-vals = generalize(er, [], [], EXPR_GRAMMAR, expr_multiply)
-ta = get_abstract_tree(er, vals)
-s = tree_to_str_a(ta)
-print(s)
-for i in range(10):
-    v = generate_testcase(ta, EXPR_GRAMMAR)
-    print(v)
+    vals = generalize(er, [], [], EXPR_GRAMMAR, expr_double_paren)
+    ta = get_abstract_tree(er, vals)
+    s = tree_to_str_a(ta)
+    print(s)
+    for i in range(10):
+        v = generate_testcase(ta, EXPR_GRAMMAR)
+        print(v)
+    print()
+    print()
+    def expr_multiply(inp):
+        if re.match(r'.*[*].*', inp):
+            return PRes.success
+        return PRes.failed
+
+    er = reduction(parsed_expr, EXPR_GRAMMAR, expr_multiply)
+
+    vals = generalize(er, [], [], EXPR_GRAMMAR, expr_multiply)
+    ta = get_abstract_tree(er, vals)
+    s = tree_to_str_a(ta)
+    print(s)
+    for i in range(10):
+        v = generate_testcase(ta, EXPR_GRAMMAR)
+        print(v)
 
